@@ -1,0 +1,91 @@
+/* กำหนดค่าเริ่มต้น */
+html {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif; /* เปลี่ยนฟอนต์เป็น Roboto */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f5f5f5; /* เปลี่ยนสีพื้นหลัง */
+}
+
+/* สีที่ใช้ */
+:root {
+  --primary-color: #007bff; /* สีหลัก */
+  --secondary-color: #6c757d; /* สีรอง */
+  --white: #fff;
+  --black: #333;
+}
+
+/* ส่วนหัว */
+header {
+  background-color: var(--white);
+  padding: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+/* เนื้อหา */
+main {
+  padding: 2rem;
+}
+
+/* โพสต์ */
+article {
+  background-color: var(--white);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* ส่วนท้าย */
+footer {
+  background-color: var(--white);
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ลิงก์ */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: darken(var(--primary-color), 10%); /* ทำให้สีเข้มลงเมื่อ hover */
+}
+
+/* ตัวอย่างการใช้ Flexbox สำหรับจัดวางเนื้อหา */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* เพิ่มสไตล์สำหรับหน้าจอขนาดเล็ก */
+@media (max-width: 768px) {
+  /* ปรับขนาดฟอนต์และระยะห่าง */
+  body {
+    font-size: 14px;
+  }
+
+  header, main, footer {
+    padding: 1rem;
+  }
+}
