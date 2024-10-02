@@ -1,7 +1,11 @@
+/* index.css */
+
 /* กำหนดค่าเริ่มต้น */
 html {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif; /* เปลี่ยนฟอนต์เป็น Roboto */
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 *,
@@ -12,22 +16,24 @@ html {
 
 body {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
   color: #333;
   background-color: #f5f5f5; /* เปลี่ยนสีพื้นหลัง */
 }
 
 /* สีที่ใช้ */
 :root {
-  --primary-color: #007bff; /* สีหลัก */
-  --secondary-color: #6c757d; /* สีรอง */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
   --white: #fff;
   --black: #333;
+  --gray: #f2f2f2;
 }
 
 /* ส่วนหัว */
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: var(--white);
   padding: 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -39,6 +45,39 @@ h1 {
   color: var(--primary-color);
 }
 
+/* ปุ่ม */
+button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+button:hover {
+  color: darken(var(--primary-color), 10%);
+}
+
+/* -----
+SVG Search Icons - svgicons.sparkk.fr
+----- */
+.svg-icon {
+  width: 2rem;
+  height: 2rem;
+  fill: var(--primary-color);
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #4691f6;
+}
+
+.svg-icon circle {
+  stroke: #4691f6;
+  stroke-width: 1;
+}
+
 /* เนื้อหา */
 main {
   padding: 2rem;
@@ -47,8 +86,8 @@ main {
 /* โพสต์ */
 article {
   background-color: var(--white);
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 2rem;
   margin-bottom: 2rem;
 }
@@ -58,17 +97,6 @@ footer {
   background-color: var(--white);
   padding: 2rem;
   text-align: center;
-}
-
-/* ลิงก์ */
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: darken(var(--primary-color), 10%); /* ทำให้สีเข้มลงเมื่อ hover */
 }
 
 /* ตัวอย่างการใช้ Flexbox สำหรับจัดวางเนื้อหา */
