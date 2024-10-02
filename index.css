@@ -30,7 +30,7 @@ body {
 }
 
 /* ส่วนหัว */
-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -79,12 +79,12 @@ SVG Search Icons - svgicons.sparkk.fr
 }
 
 /* เนื้อหา */
-main {
+.main {
   padding: 2rem;
 }
 
 /* โพสต์ */
-article {
+.article {
   background-color: var(--white);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -93,7 +93,7 @@ article {
 }
 
 /* ส่วนท้าย */
-footer {
+.footer {
   background-color: var(--white);
   padding: 2rem;
   text-align: center;
