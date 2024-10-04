@@ -15,8 +15,8 @@ buttons.forEach(button => {
   });
 });
 
-const backButton = document.querySelector('.back-button');
+const backButton = document.querySelector('[name="back-button"]');
 
-  backButton.addEventListener('click', () => {
+backButton.addEventListener('click', () => {
     window.history.back();
-  });
+});
