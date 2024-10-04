@@ -1,0 +1,13 @@
+/* ปุ่ม */
+button {
+  /* สไตล์ปุ่มเดิม */
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+button:active {
+  /* สไตล์เมื่อคลิก */
+  background-color: #BDBDBD3D;
+}

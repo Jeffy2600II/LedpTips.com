@@ -1,0 +1,42 @@
+/* about.css */
+
+/* กำหนดค่าเริ่มต้น */
+html {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif; /* เปลี่ยนฟอนต์เป็น Roboto */
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  color: #333;
+  background-color: #fff; /* เปลี่ยนสีพื้นหลัง */
+}
+
+/* สีที่ใช้ */
+:root {
+  --primary-color: #007bff;
+  --white: #fff;
+}
+
+/* ส่วนท้าย */
+footer {
+  background-color: var(--white);
+  padding: 2rem;
+  text-align: center;
+}
+
+.p {
+  font-weight: 300;
+}
+
+.p-a {
+  font-weight: 50;
+}
