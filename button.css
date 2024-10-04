@@ -1,5 +1,5 @@
 /* ปุ่ม */
-button {
+.button {
   /* สไตล์ปุ่มเดิม */
   background: none;
   border: none;
@@ -7,7 +7,7 @@ button {
   transition: all 0.3s ease;
 }
 
-button:active {
+.button:active {
   /* สไตล์เมื่อคลิก */
   background-color: #BDBDBD3D;
 }
