@@ -5,6 +5,7 @@
   border: none;
   color: var(--primary-color);
   transition: all 0.3s ease;
+  outline: none; /* เพิ่มเพื่อลบเส้นขอบเมื่อได้รับโฟกัส */
 }
 
 .button:active {

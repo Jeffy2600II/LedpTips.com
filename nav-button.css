@@ -8,6 +8,7 @@
   display: flex; /* เปลี่ยนปุ่มเป็น flex container เพื่อจัดวางองค์ประกอบภายใน */
   flex-direction: column; /* เรียงองค์ประกอบในแนวตั้ง */
   align-items: center; /* จัดกลางทั้ง SVG และข้อความตามแนวแกน Y */
+  outline: none; /* เพิ่มเพื่อลบเส้นขอบเมื่อได้รับโฟกัส */
 }
 
 .nav-button:active {
