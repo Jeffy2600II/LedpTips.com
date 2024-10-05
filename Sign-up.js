@@ -1,14 +1,27 @@
-// Sign-up.js
 function onSignUp(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    // TODO: Send ID token to your backend for verification and create a session.
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId());
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail());
+
+  // Redirect to account settings page
+  window.location.href = 'account-settings.html';
 }
 
 document.getElementById('signup-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // TODO: Add your form submission logic here
+  e.preventDefault();
+  // TODO: Add your form submission logic here
+
+  // Generate random user ID
+  function generateRandomUserId() {
+    return Math.floor(10000000 + Math.random() * 90000000).toString(); // 8 digits
+  }
+
+  // After successful signup, set user ID and redirect to homepage
+  const userId = generateRandomUserId();
+  console.log('Generated User ID: ' + userId);
+
+  // Redirect to homepage after setting user ID
+  window.location.href = 'index.html';
 });

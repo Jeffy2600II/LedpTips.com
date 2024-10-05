@@ -1,4 +1,3 @@
-<!--create-post.html-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create Post</title>
     <link rel="stylesheet" href="create-post.css">
+    <link rel="stylesheet" href="button.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
+  <button name="back-button" class="b-button" class="back-button">ย้อนกลับ</button>
     <div class="create-post-container">
         <header class="header">
             <h1 class="header-title">Create Your Post</h1>
@@ -34,8 +35,10 @@
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.min.js"></script>
+    <script src="button.js"></script>
     <script src="my-sql.js"></script>
     <script>
+        // Initialize Quill editor
         var quill = new Quill('#editor-container', {
             theme: 'snow',
             modules: {
@@ -52,8 +55,71 @@
                     ['link', 'image', 'video'],
                     ['clean']
                 ]
+            },
+            placeholder: 'Compose your epic here...'
+        });
+
+        // Remove placeholder text when typing starts
+        quill.on('text-change', function(delta, oldDelta, source) {
+            if (source === 'user' && quill.getText().trim() !== '') {
+                quill.root.classList.remove('ql-blank');
             }
         });
+
+        document.getElementById('post-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = quill.root.innerHTML;
+            const tags = document.getElementById('tags').value;
+
+            function getLoggedInUser() {
+                return { id: 1, username: 'testuser' }; 
+            }
+
+            const user = getLoggedInUser();
+
+            if (!user) {
+                alert('Please log in to create a post.');
+                return;
+            }
+
+            const userId = user.id;
+            const createdAt = new Date().toISOString();
+            const postId = generateRandomId();
+
+            if (!title || !content || !tags) {
+                alert('Please fill all required fields.');
+                return;
+            }
+
+            const db = new SQL.Database();
+            db.run(`CREATE TABLE IF NOT EXISTS posts (
+                id INTEGER PRIMARY KEY,
+                user_id INTEGER,
+                title TEXT,
+                content TEXT,
+                tags TEXT,
+                created_at TEXT,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            )`);
+
+            db.run(`INSERT INTO posts (id, user_id, title, content, tags, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
+                [postId, userId, title, content, tags, createdAt]);
+
+            const result = db.exec("SELECT changes() as changes")[0];
+            if (result && result.values && result.values[0][0] > 0) {
+                alert('Post created successfully!');
+            } else {
+                alert('Failed to create post. Please try again.');
+            }
+
+            document.getElementById('post-form').reset();
+            quill.setText('');
+        });
+
+        function generateRandomId() {
+            return Math.floor(Math.random() * 1000000);
+        }
     </script>
 </body>
 </html>
