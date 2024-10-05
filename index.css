@@ -36,6 +36,7 @@ body {
   align-items: center;
   background-color: var(--white);
   padding: 2rem;
+  gap: 20px;
 }
 
 .h1 {

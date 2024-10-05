@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="Sign-up.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="812877525279-ovncgfph3j3j6dueplkq9tqhsp12skd2.apps.googleusercontent.com">
+</head>
+<body>
+    <div class="signup-container">
+        <header>
+            <h1>Sign Up</h1>
+        </header>
+        <main>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="submit-button">Sign Up</button>
+                </div>
+            </form>
+            <div class="form-group">
+                <div class="g-signin2" data-onsuccess="onSignUp"></div>
+            </div>
+            <p>Already have an account? <a href="Login.html">Login</a></p>
+        </main>
+    </div>
+    <script src="Sign-up.js"></script>
+</body>
+</html>

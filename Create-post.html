@@ -1,14 +1,108 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="create-post.css">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
-
 <body>
+    <div class="create-post-container">
+        <header>
+            <h1>Create Your Post</h1>
+        </header>
+        <main>
+            <form id="post-form">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" placeholder="Enter your post title" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Content:</label>
+                    <div id="editor-container"></div>
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags:</label>
+                    <input type="text" id="tags" name="tags" placeholder="e.g., tech, life, travel" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="submit-button">Submit</button>
+                </div>
+            </form>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.min.js"></script>
+    <script src="create-post.js"></script>
+    <script>
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
 
+        document.getElementById('post-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = quill.root.innerHTML;
+            const tags = document.getElementById('tags').value;
+
+            // Mock login function - replace with actual login logic
+            function getLoggedInUser() {
+                // Return null if user is not logged in
+                return { id: 1, username: 'testuser' }; // Replace with actual user data
+            }
+
+            const user = getLoggedInUser();
+
+            if (!user) {
+                alert('Please log in to create a post.');
+                return;
+            }
+
+            const userId = user.id;
+            const createdAt = new Date().toISOString();
+            const postId = generateRandomId();
+
+            // Validate form data
+            if (!title || !content || !tags) {
+                alert('Please fill all required fields.');
+                return;
+            }
+
+            // Add your form submission logic here
+            const db = new SQL.Database();
+
+            db.run(`INSERT INTO posts (id, user_id, title, content, tags, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
+                [postId, userId, title, content, tags, createdAt]);
+
+            const result = db.exec("SELECT changes() as changes")[0];
+            if (result && result.values && result.values[0][0] > 0) {
+                alert('Post created successfully!');
+            } else {
+                alert('Failed to create post. Please try again.');
+            }
+
+            document.getElementById('post-form').reset();
+            quill.setText(''); // Clear Quill editor
+        });
+
+        function generateRandomId() {
+            return Math.floor(Math.random() * 1000000);
+        }
+    </script>
 </body>
-
 </html>
