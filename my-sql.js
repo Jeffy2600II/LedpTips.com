@@ -1,3 +1,4 @@
+// my-sql.js
 // Include the sql.js library
 import initSqlJs from 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/sql-wasm.js';
 

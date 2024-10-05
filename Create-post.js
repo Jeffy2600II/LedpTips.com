@@ -1,3 +1,4 @@
+// create-post.js
 const config = {
   locateFile: filename => `https://cdn.jsdelivr.net/npm/sql.js@1.11.0/dist/${filename}`
 };

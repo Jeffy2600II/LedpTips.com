@@ -1,3 +1,4 @@
+// Sign-up.js
 function onSignUp(googleUser) {
     var profile = googleUser.getBasicProfile();
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.

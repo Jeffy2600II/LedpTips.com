@@ -1,3 +1,4 @@
+// button.js
 // เลือกปุ่มทั้งหมดที่มี name="button"
 const buttons = document.getElementsByName('button');
 
