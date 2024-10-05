@@ -6,25 +6,29 @@
   padding: 20px;
 }
 
-header {
+.header {
   text-align: center;
 }
 
-main {
+.header-title {
+  margin-bottom: 20px;
+}
+
+.main {
   padding: 20px;
 }
 
-form {
+.post-form {
   display: flex;
   flex-direction: column;
 }
 
-label {
+.form-label {
   display: block;
   margin-bottom: 5px;
 }
 
-input[type="text"],
+.form-input,
 .ql-container {
   margin-bottom: 10px;
   padding: 10px;
@@ -36,11 +40,11 @@ input[type="text"],
   min-height: 200px;
 }
 
-#editor-container {
+.editor-container {
   background-color: #fff;
 }
 
-button {
+.submit-button {
   padding: 10px;
   background-color: #007bff;
   color: #fff;
@@ -50,6 +54,6 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
+.submit-button:hover {
   background-color: #0056b3;
 }

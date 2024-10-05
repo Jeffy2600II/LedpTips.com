@@ -7,12 +7,7 @@ initSqlJs(config).then(SQL => {
 
   // Mock login function - replace with actual login logic
   function getLoggedInUser() {
-    return { id: 1, username: 'testuser' }; // Replace with actual user data
-  }
-
-  // Generate a random post ID
-  function generateRandomId() {
-    return Math.floor(Math.random() * 1000000);
+    return { id: 1, username: 'testuser', email: 'testuser@gmail.com', phone_number: '+66912345678', created_at: '2024-01-01T00:00:00Z', status: 'active' }; // Replace with actual user data
   }
 
   const user = getLoggedInUser();
@@ -23,34 +18,58 @@ initSqlJs(config).then(SQL => {
     return;
   }
 
-  // Initialize Quill editor
-  var quill = new Quill('#editor-container', {
-    theme: 'snow',
-    modules: {
-      toolbar: [
-                [{ 'header': [1, 2, 3, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                ['blockquote', 'code-block'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                [{ 'script': 'sub' }, { 'script': 'super' }],
-                [{ 'indent': '-1' }, { 'indent': '+1' }],
-                [{ 'direction': 'rtl' }],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'align': [] }],
-                ['link', 'image', 'video'],
-                ['clean']
-            ]
-    }
-  });
+  // Generate a random post ID
+  function generateRandomId() {
+    return Math.floor(Math.random() * 1000000);
+  }
+
+  // Create tables if not exists
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        username TEXT,
+        email TEXT,
+        phone_number TEXT,
+        created_at TEXT,
+        status TEXT
+    )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS settings (
+        id INTEGER PRIMARY KEY,
+        user_id INTEGER,
+        general_settings TEXT,
+        language_settings TEXT,
+        other_settings TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY,
+        user_id INTEGER,
+        title TEXT,
+        content TEXT,
+        tags TEXT,
+        created_at TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS comments (
+        id INTEGER PRIMARY KEY,
+        post_id INTEGER,
+        user_id INTEGER,
+        content TEXT,
+        created_at TEXT,
+        FOREIGN KEY (post_id) REFERENCES posts(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )`);
 
   document.getElementById('post-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const title = document.getElementById('title').value;
-    const userId = user.id;
     const content = quill.root.innerHTML; // Get HTML content from Quill editor
     const tags = document.getElementById('tags').value;
     const createdAt = new Date().toISOString();
     const postId = generateRandomId();
+    const userId = user.id;
 
     // Validate form data
     if (!title || !content || !tags) {

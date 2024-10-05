@@ -1,22 +1,42 @@
-// my-sql.js
+// Include the sql.js library
+import initSqlJs from 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/sql-wasm.js';
+
 const config = {
-  locateFile: filename => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/${filename}`
+    locateFile: filename => `https://cdn.jsdelivr.net/npm/sql.js@1.11.0/dist/${filename}`
 };
 
 initSqlJs(config).then(SQL => {
-  const db = new SQL.Database();
+    const db = new SQL.Database();
 
-  // Create users table
-  db.run(`CREATE TABLE IF NOT EXISTS users (
+    // Mock login function - replace with actual login logic
+    function getLoggedInUser() {
+        return { id: 1, username: 'testuser', email: 'testuser@gmail.com', phone_number: '+66912345678', created_at: '2024-01-01T00:00:00Z', status: 'active' }; // Replace with actual user data
+    }
+
+    const user = getLoggedInUser();
+
+    if (!user) {
+        alert('Please log in to create a post.');
+        document.getElementById('post-form').style.display = 'none';
+        return;
+    }
+
+    // Generate a random post ID
+    function generateRandomId() {
+        return Math.floor(Math.random() * 1000000);
+    }
+
+    // Create tables if not exists
+    db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY,
         username TEXT,
         email TEXT,
         phone_number TEXT,
-        created_at TEXT
+        created_at TEXT,
+        status TEXT
     )`);
 
-  // Create settings table
-  db.run(`CREATE TABLE IF NOT EXISTS settings (
+    db.run(`CREATE TABLE IF NOT EXISTS settings (
         id INTEGER PRIMARY KEY,
         user_id INTEGER,
         general_settings TEXT,
@@ -25,32 +45,53 @@ initSqlJs(config).then(SQL => {
         FOREIGN KEY (user_id) REFERENCES users(id)
     )`);
 
-  // Create posts table
-  db.run(`CREATE TABLE IF NOT EXISTS posts (
+    db.run(`CREATE TABLE IF NOT EXISTS posts (
         id INTEGER PRIMARY KEY,
         user_id INTEGER,
+        title TEXT,
         content TEXT,
+        tags TEXT,
         created_at TEXT,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )`);
 
-  // Insert sample data
-  db.run(`INSERT INTO users (username, email, phone_number, created_at) VALUES 
-        ('testuser', 'testuser@gmail.com', '+66928134206', '2024-10-04 16:57')`);
-  db.run(`INSERT INTO settings (user_id, general_settings, language_settings, other_settings) VALUES 
-        (1, '{"theme": "dark"}', '{"language": "en"}', '{"notification": "enabled"}')`);
-  db.run(`INSERT INTO posts (user_id, content, created_at) VALUES 
-        (1, 'Hello World!', '2024-10-04 17:00')`);
+    db.run(`CREATE TABLE IF NOT EXISTS comments (
+        id INTEGER PRIMARY KEY,
+        post_id INTEGER,
+        user_id INTEGER,
+        content TEXT,
+        created_at TEXT,
+        FOREIGN KEY (post_id) REFERENCES posts(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )`);
 
-  // Query data
-  const resUsers = db.exec('SELECT * FROM users');
-  console.log('Users:', resUsers);
+    document.getElementById('post-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const title = document.getElementById('title').value;
+        const content = quill.root.innerHTML; // Get HTML content from Quill editor
+        const tags = document.getElementById('tags').value;
+        const createdAt = new Date().toISOString();
+        const postId = generateRandomId();
+        const userId = user.id;
 
-  const resSettings = db.exec('SELECT * FROM settings');
-  console.log('Settings:', resSettings);
+        // Validate form data
+        if (!title || !content || !tags) {
+            alert('Please fill all required fields.');
+            return;
+        }
 
-  const resPosts = db.exec('SELECT * FROM posts');
-  console.log('Posts:', resPosts);
+        // Insert data into the database
+        db.run(`INSERT INTO posts (id, user_id, title, content, tags, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
+            [postId, userId, title, content, tags, createdAt]);
 
-  db.close();
+        const result = db.exec("SELECT changes() as changes")[0];
+        if (result && result.values && result.values[0][0] > 0) {
+            alert('Post created successfully!');
+        } else {
+            alert('Failed to create post. Please try again.');
+        }
+
+        document.getElementById('post-form').reset();
+        quill.setText(''); // Clear Quill editor
+    });
 });
