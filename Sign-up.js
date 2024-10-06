@@ -5,23 +5,54 @@ function onSignUp(googleUser) {
   console.log('Image URL: ' + profile.getImageUrl());
   console.log('Email: ' + profile.getEmail());
 
-  // Redirect to account settings page
+  // Redirect to account settings page for additional information
   window.location.href = 'account-settings.html';
 }
 
 document.getElementById('signup-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  // TODO: Add your form submission logic here
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
 
-  // Generate random user ID
-  function generateRandomUserId() {
-    return Math.floor(10000000 + Math.random() * 90000000).toString(); // 8 digits
+  if (password !== confirmPassword) {
+    alert('Passwords do not match.');
+    return;
   }
 
-  // After successful signup, set user ID and redirect to homepage
-  const userId = generateRandomUserId();
-  console.log('Generated User ID: ' + userId);
+  // Check if the account already exists
+  const db = new SQL.Database();
+  const accountExists = db.exec(`SELECT * FROM users WHERE email = ?`, [email]);
+  if (accountExists.length > 0) {
+    alert('Account already exists. Please login.');
+    window.location.href = 'Login.html';
+    return;
+  }
 
-  // Redirect to homepage after setting user ID
+  // Generate a random user ID
+  const userId = generateRandomUserId();
+  const createdAt = new Date().toISOString();
+
+  // Insert new user into the database
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        username TEXT,
+        email TEXT,
+        password TEXT,
+        created_at TEXT,
+        status TEXT
+    )`);
+
+  db.run(`INSERT INTO users (id, username, email, password, created_at, status) VALUES (?, ?, ?, ?, ?, ?)`,
+        [userId, name, email, password, createdAt, 'active']);
+
+  // Automatically login after signup
+  alert('Account created successfully. Logging you in...');
   window.location.href = 'index.html';
 });
+
+// Generate a random user ID
+function generateRandomUserId() {
+  return Math.floor(10000000 + Math.random() * 90000000).toString(); // 8 digits
+}
